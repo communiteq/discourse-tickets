@@ -6,6 +6,7 @@ import { isTicketTag, ticketTagGroup } from '../lib/ticket-utilities';
 import { isEmpty } from "@ember/object/computed";
 import { get } from "@ember/object";
 import { scheduleOnce } from "@ember/runloop";
+import { i18n } from "discourse-i18n";
 
 export default {
   name: 'discourse-tickets-initializer',
@@ -14,6 +15,16 @@ export default {
     const siteSettings = container.lookup("site-settings:main");
 
     withPluginApi('0.8.13', api => {
+      if (currentUser?.admin) {
+        api.addCommunitySectionLink({
+          name: "tickets.nav_button_title",
+          route: "adminTickets",
+          title: i18n("tickets.nav_button_title"),
+          text: i18n("tickets.nav_button_title"),
+          icon: siteSettings.tickets_icon
+        });
+      }
+
       api.modifyClass('component:mini-tag-chooser', {
         pluginId: 'discourse-tickets',
         willComputeAsyncContent(content) {
