@@ -1,19 +1,19 @@
 <div class="tickets-filters">
   <div class="controls">
     {{combo-box
-      content=filterFields
-      value=filterField
+      content=this.filterFields
+      value=this.filterField
       none='tickets.dashboard_table.filter.field'
     }}
     {{combo-box
-      content=filterValues
-      value=filterValue
+      content=this.filterValues
+      value=this.filterValue
       none='tickets.dashboard_table.filter.value'
     }}
     {{d-button action=(action "applyFilter") label='tickets.dashboard_table.filter.apply'}}
   </div>
   <div class="filters">
-    {{#each currentFilters as |filter|}}
+    {{#each this.currentFilters as |filter|}}
       <div class="filter">
         <span>{{filter.field}}: {{filter.value}}</span>
         {{d-button action=(action "removeFilter") actionParam=filter icon='times'}}
@@ -25,35 +25,35 @@
 <div class="tickets-pages">
   <span class="label">{{i18n 'tickets.dashboard_table.page.label'}}</span>
   <div class="count">
-    {{#if lessThanLimit}}
-      {{total}}
+    {{#if this.lessThanLimit}}
+      {{this.total}}
     {{else}}
-      {{pageStart}} - {{pageEnd}} of {{total}}
+      {{this.pageStart}} - {{this.pageEnd}} of {{this.total}}
     {{/if}}
   </div>
   <div class="controls">
-    {{d-button action=(action "previousPage") label='tickets.dashboard_table.page.previous'disabled=previousDisabled}}
-    {{d-button action=(action "nextPage") label='tickets.dashboard_table.page.next' disabled=nextDisabled}}
+    {{d-button action=(action "previousPage") label='tickets.dashboard_table.page.previous'disabled=this.previousDisabled}}
+    {{d-button action=(action "nextPage") label='tickets.dashboard_table.page.next' disabled=this.nextDisabled}}
   </div>
   <div class="page-list">
-    {{#each pages as |p|}}
+    {{#each this.pages as |p|}}
       {{d-button translatedLabel=p.number action=(action "goToPage") actionParam=p.number class=p.classes}}
     {{/each}}
   </div>
 </div>
 
-{{#conditional-loading-spinner condition=refreshing}}
+{{#conditional-loading-spinner condition=this.refreshing}}
   <table class='grid'>
     <thead>
-      {{table-header-toggle tagName="th" field="title" labelKey='tickets.dashboard_table.headings.title' order=order asc=asc automatic=true}}
-      {{table-header-toggle tagName="th" field="tags" labelKey='tagging.tags' order=order asc=asc automatic=true}}
-      {{table-header-toggle tagName="th" field="status" labelKey='tickets.status' order=order asc=asc automatic=true}}
-      {{table-header-toggle tagName="th" field="priority" labelKey='tickets.priority' order=order asc=asc automatic=true}}
-      {{table-header-toggle tagName="th" field="reason" labelKey="tickets.reason" order=order asc=asc automatic=true}}
-      {{table-header-toggle tagName="th" field="assigned" labelKey="tickets.dashboard_table.headings.assigned" order=order asc=asc automatic=true}}
+      {{table-header-toggle tagName="th" field="title" labelKey='tickets.dashboard_table.headings.title' order=this.order asc=this.asc automatic=true}}
+      {{table-header-toggle tagName="th" field="tags" labelKey='tagging.tags' order=this.order asc=this.asc automatic=true}}
+      {{table-header-toggle tagName="th" field="status" labelKey='tickets.status' order=this.order asc=this.asc automatic=true}}
+      {{table-header-toggle tagName="th" field="priority" labelKey='tickets.priority' order=this.order asc=this.asc automatic=true}}
+      {{table-header-toggle tagName="th" field="reason" labelKey="tickets.reason" order=this.order asc=this.asc automatic=true}}
+      {{table-header-toggle tagName="th" field="assigned" labelKey="tickets.dashboard_table.headings.assigned" order=this.order asc=this.asc automatic=true}}
     </thead>
     <tbody>
-      {{#each tickets as |ticket|}}
+      {{#each this.tickets as |ticket|}}
         {{tickets-dashboard-row ticket=ticket
                                 filterBy=(action 'filterBy')}}
       {{/each}}
