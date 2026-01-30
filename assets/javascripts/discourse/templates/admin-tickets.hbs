@@ -15,8 +15,10 @@
   <div class="filters">
     {{#each this.currentFilters as |filter|}}
       <div class="filter">
-        <span>{{filter.field}}: {{filter.value}}</span>
-        {{d-button action=(action "removeFilter") actionParam=filter icon='times'}}
+        <span class="filter-field">
+          {{filter.field}}: {{filter.value}}
+          {{d-button action=(action "removeFilter") actionParam=filter class="btn-transparent remove-filter" icon='xmark'}}
+        </span>
       </div>
     {{/each}}
   </div>
@@ -42,21 +44,21 @@
   </div>
 </div>
 
-{{#conditional-loading-spinner condition=this.refreshing}}
-  <table class='grid'>
-    <thead>
-      {{table-header-toggle tagName="th" field="title" labelKey='tickets.dashboard_table.headings.title' order=this.order asc=this.asc automatic=true}}
-      {{table-header-toggle tagName="th" field="tags" labelKey='tagging.tags' order=this.order asc=this.asc automatic=true}}
-      {{table-header-toggle tagName="th" field="status" labelKey='tickets.status' order=this.order asc=this.asc automatic=true}}
-      {{table-header-toggle tagName="th" field="priority" labelKey='tickets.priority' order=this.order asc=this.asc automatic=true}}
-      {{table-header-toggle tagName="th" field="reason" labelKey="tickets.reason" order=this.order asc=this.asc automatic=true}}
-      {{table-header-toggle tagName="th" field="assigned" labelKey="tickets.dashboard_table.headings.assigned" order=this.order asc=this.asc automatic=true}}
-    </thead>
-    <tbody>
+<ConditionalLoadingSpinner @condition={{@this.refreshing}} />
+{{#unless @this.refreshing}}
+ <ResponsiveTable @className="tickets-grid">
+    <:header>
+      <TableHeaderToggle @field="title" @labelKey='tickets.dashboard_table.headings.title' @order=this.order @asc=this.asc @automatic=true />
+      <TableHeaderToggle @field="tags" @labelKey='tagging.tags' @order=this.order @asc=this.asc @automatic=true />
+      <TableHeaderToggle @field="status" @labelKey='tickets.status' @order=this.order @asc=this.asc @automatic=true />
+      <TableHeaderToggle @field="priority" @labelKey='tickets.priority' @order=this.order @asc=this.asc @automatic=true />
+      <TableHeaderToggle @field="reason" @labelKey="tickets.reason" @order=this.order @asc=this.asc @automatic=true />
+      <TableHeaderToggle @field="assigned" @labelKey="tickets.dashboard_table.headings.assigned" @order=this.order @asc=this.asc @automatic=true />
+    </:header>
+    <:body>
       {{#each this.tickets as |ticket|}}
-        {{tickets-dashboard-row ticket=ticket
-                                filterBy=(action 'filterBy')}}
+          {{tickets-dashboard-row ticket=ticket filterBy=(action 'filterBy')}}
       {{/each}}
-    </tbody>
-  </table>
-{{/conditional-loading-spinner}}
+    </:body>
+  </<ResponsiveTable>
+{{/unless}}

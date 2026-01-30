@@ -1,19 +1,19 @@
-<td><a title="{{ticket.title}}" href="{{ticket.url}}">
-  {{ticket.title}}
-</a></td>
-<td class="tags">
-  {{#each ticket.tags as |t|}}
-    <a {{action filterBy 'tag' t}}>
+<div class="directory-table__cell directory-table__cell--title">
+  <a title="{{this.ticket.title}}" href="{{this.ticket.url}}">{{this.ticket.title}}</a>
+</div>
+<div class="directory-table__cell directory-table__cell--tags">
+  {{#each this.ticket.tags as |t|}}
+    <a {{action this.filterBy 'tag' t}}>
       {{discourse-tag t noHref=true}}
     </a>
   {{/each}}
-</td>
-<td>{{ticket.status}}</td>
-<td>{{ticket.priority}}</td>
-<td>{{ticket.reason}}</td>
-<td>
-  {{#if ticket.assigned}}
-    {{tickets-dashboard-user user=ticket.assigned.user
-                             filterBy=filterBy}}
+</div>
+<div class="directory-table__cell directory-table__cell--status">{{this.ticket.status}}</div>
+<div class="directory-table__cell directory-table__cell--priority">{{this.ticket.priority}}</div>
+<div class="directory-table__cell directory-table__cell--reason">{{this.ticket.reason}}</div>
+<div class="directory-table__cell directory-table__cell--assigned">
+  {{#if this.ticket.assigned}}
+    {{tickets-dashboard-user user=this.ticket.assigned.user
+                             filterBy=this.filterBy}}
   {{/if}}
-</td>
+</div>

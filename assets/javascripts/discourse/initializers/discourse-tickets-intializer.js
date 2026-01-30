@@ -1,6 +1,7 @@
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import { default as discourseComputed } from 'discourse-common/utils/decorators';
 import { escapeExpression } from "discourse/lib/utilities";
+import { iconHTML } from "discourse/lib/icon-library";
 import { isTicketTag, ticketTagGroup } from '../lib/ticket-utilities';
 import { isEmpty } from "@ember/object/computed";
 import { get } from "@ember/object";
@@ -79,10 +80,8 @@ export default {
         if (topic.is_ticket && topic.tags && currentUser && currentUser.staff) {
           hideTicketTags();
 
-          const icon = siteSettings.tickets_icon;
           const ticketTags = topic.tags.filter(t => isTicketTag(t));
-
-          let html = `<i class='fa fa-${icon} ticket-icon'></i>`;
+          let html = iconHTML(siteSettings.tickets_icon);
 
           ticketTags.forEach((t) => {
             let group = ticketTagGroup(t);
