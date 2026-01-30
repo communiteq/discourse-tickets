@@ -124,7 +124,6 @@ export default class TicketsControls extends Component {
 
   @action
   updateTicket(ticketType, value) {
-    console.log("Updating ticket", ticketType, value);
     const list = this.ticketTags[ticketType];
     let tags = [...(this.topic.get("tags") || [])];
 
