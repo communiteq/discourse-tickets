@@ -1,10 +1,12 @@
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import { default as discourseComputed } from 'discourse-common/utils/decorators';
 import { escapeExpression } from "discourse/lib/utilities";
+import { iconHTML } from "discourse/lib/icon-library";
 import { isTicketTag, ticketTagGroup } from '../lib/ticket-utilities';
 import { isEmpty } from "@ember/object/computed";
 import { get } from "@ember/object";
 import { scheduleOnce } from "@ember/runloop";
+import { i18n } from "discourse-i18n";
 
 export default {
   name: 'discourse-tickets-initializer',
@@ -13,6 +15,16 @@ export default {
     const siteSettings = container.lookup("site-settings:main");
 
     withPluginApi('0.8.13', api => {
+      if (currentUser?.admin) {
+        api.addCommunitySectionLink({
+          name: "tickets.nav_button_title",
+          route: "adminTickets",
+          title: i18n("tickets.nav_button_title"),
+          text: i18n("tickets.nav_button_title"),
+          icon: siteSettings.tickets_icon
+        });
+      }
+
       api.modifyClass('component:mini-tag-chooser', {
         pluginId: 'discourse-tickets',
         willComputeAsyncContent(content) {
@@ -79,10 +91,8 @@ export default {
         if (topic.is_ticket && topic.tags && currentUser && currentUser.staff) {
           hideTicketTags();
 
-          const icon = siteSettings.tickets_icon;
           const ticketTags = topic.tags.filter(t => isTicketTag(t));
-
-          let html = `<i class='fa fa-${icon} ticket-icon'></i>`;
+          let html = iconHTML(siteSettings.tickets_icon);
 
           ticketTags.forEach((t) => {
             let group = ticketTagGroup(t);

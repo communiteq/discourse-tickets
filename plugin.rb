@@ -1,6 +1,6 @@
 # name: discourse-tickets
 # about: Tickets system for Discourse
-# version: 0.2
+# version: 2026.1
 # authors: Pavilion
 # url: https://github.com/paviliondev/discourse-tickets
 # contact_emails: development@pavilion.tech
